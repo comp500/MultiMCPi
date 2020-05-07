@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 
 const mavenCentralPrefix = "https://repo1.maven.org/maven2/";
 const newVersion = "3.2.3";
-const modifyLinux = "arm64";
+const modifyLinux = "arm32";
 
 const escapeRegExp = string => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 

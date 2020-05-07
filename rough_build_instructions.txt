@@ -1,0 +1,14 @@
+wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add -
+add "deb https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/ buster main" to /etc/apt/sources.list
+sudo apt update
+sudo apt install qtbase5-dev cmake adoptopenjdk-14-hotspot clang
+
+mkdir build
+mkdir install
+git clone --recursive https://github.com/MultiMC/MultiMC5.git src
+
+change src/libraries/launcher/CMakeLists.txt and src/libraries/javacheck/CMakeLists.txt to 1.7 instead of 1.6
+
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang ../src
+make -j4
