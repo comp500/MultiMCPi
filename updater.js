@@ -41,18 +41,20 @@ const getMavenDownload = async (maven, classifier) => {
 console.log(data);
 
 const doParallelUpdate = async () => {
-	data.version = newVersion;
+	// Keep it the same as the old version so MMC doesn't get confused
+	//data.version = newVersion;
 	data.libraries = await Promise.all(data.libraries.map(async lib => {
-		lib.name = mavenVersionReplace(lib.name);
+		// Keep it the same as the old version so MMC doesn't get confused
+		let newName = mavenVersionReplace(lib.name);
 		if (lib.downloads.artifact) {
-			lib.downloads.artifact = await getMavenDownload(lib.name, "");
+			lib.downloads.artifact = await getMavenDownload(newName, "");
 		}
 		if (lib.downloads.classifiers) {
 			await Promise.all(Object.keys(lib.downloads.classifiers).map(async classifier => {
 				if (modifyLinux) {
-					lib.downloads.classifiers[classifier] = await getMavenDownload(lib.name, classifier.replace("linux", "linux-" + modifyLinux));
+					lib.downloads.classifiers[classifier] = await getMavenDownload(newName, classifier.replace("linux", "linux-" + modifyLinux));
 				} else {
-					lib.downloads.classifiers[classifier] = await getMavenDownload(lib.name, classifier);
+					lib.downloads.classifiers[classifier] = await getMavenDownload(newName, classifier);
 				}
 			}));
 		}
